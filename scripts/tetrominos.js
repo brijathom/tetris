@@ -1,4 +1,14 @@
-// The blueprints for all tetrominos in
+// The blueprints for each tetromino in all possible orientations
+
+const O = [
+    [
+        [0, 0, 0, 0],
+        [0, 1, 1, 0],
+        [0, 1, 1, 0],
+        [0, 0, 0, 0],
+    ],
+];
+
 const I = [
     [
         [0, 0, 0, 0],
@@ -23,15 +33,6 @@ const I = [
         [0, 1, 0, 0],
         [0, 1, 0, 0],
         [0, 1, 0, 0],
-    ],
-];
-
-const O = [
-    [
-        [0, 0, 0, 0],
-        [0, 1, 1, 0],
-        [0, 1, 1, 0],
-        [0, 0, 0, 0],
     ],
 ];
 

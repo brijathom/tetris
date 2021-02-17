@@ -18,3 +18,7 @@ div {
 #score {
     display: inline-block;
 }
+
+button {
+    margin: 0px 0px;
+}
