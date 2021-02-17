@@ -5,6 +5,14 @@ const ROW = 20;
 const COL = (COLUMN = 10);
 const SQ = (squareSize = 25);
 const VACANT = "#fafaff";
+const GAME_OVER = new Audio();
+GAME_OVER.src = "/sounds/game_over.mp3";
+const LINE = new Audio();
+LINE.src = "/sounds/line.mp3";
+const ROTATE = new Audio();
+ROTATE.src = "/sounds/rotate.mp3";
+
+ROTATE.play();
 
 // Squares on the grid are filled in as required
 function drawSquare(x, y, color) {
@@ -146,6 +154,7 @@ Piece.prototype.lock = function () {
                 continue;
             }
             if (this.y + r < 0) {
+                GAME_OVER.play();
                 alert("Game Over");
                 gameOver = true;
                 break;
@@ -168,6 +177,7 @@ Piece.prototype.lock = function () {
                 grid[0][c] = VACANT;
             }
             score += 10;
+            LINE.play();
         }
     }
     drawGrid();
@@ -210,6 +220,7 @@ function control(event) {
         dropStart = Date.now();
     } else if (event.keyCode == 38) {
         p.rotate();
+        ROTATE.play();
         dropStart = Date.now();
     } else if (event.keyCode == 39) {
         p.moveRight();
@@ -226,6 +237,7 @@ function buttons(button) {
         dropStart = Date.now();
     } else if (button == "rotate") {
         p.rotate();
+        ROTATE.play();
         dropStart = Date.now();
     } else if (button == "right") {
         p.moveRight();
