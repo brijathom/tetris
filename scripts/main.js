@@ -1,4 +1,4 @@
-const cvs = document.getElementById("tetris");
+const cvs = document.getElementById("field");
 const ctx = cvs.getContext("2d");
 const scoreElement = document.getElementById("score");
 
@@ -234,9 +234,9 @@ Piece.prototype.collision = function (x, y, piece) {
 
 // CONTROL the piece
 
-document.addEventListener("keydown", CONTROL);
+document.addEventListener("keydown", control);
 
-function CONTROL(event) {
+function control(event) {
     if (event.keyCode == 37) {
         p.moveLeft();
         dropStart = Date.now();
@@ -247,6 +247,21 @@ function CONTROL(event) {
         p.moveRight();
         dropStart = Date.now();
     } else if (event.keyCode == 40) {
+        p.moveDown();
+    }
+}
+
+function buttons(button) {
+    if (button == "left") {
+        p.moveLeft();
+        dropStart = Date.now();
+    } else if (button == "rotate") {
+        p.rotate();
+        dropStart = Date.now();
+    } else if (button == "right") {
+        p.moveRight();
+        dropStart = Date.now();
+    } else if (button == "down") {
         p.moveDown();
     }
 }

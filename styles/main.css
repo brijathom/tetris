@@ -1,13 +1,19 @@
-#score {
-    display: inline-block;
+body {
+    margin-top: 50px;
 }
+
+canvas {
+    display: block;
+    margin: 0 auto;
+}
+
 div {
     font-size: 25px;
     font-weight: bold;
     font-family: monospace;
     text-align: center;
 }
-canvas {
-    display: block;
-    margin: 0 auto;
+
+#score {
+    display: inline-block;
 }

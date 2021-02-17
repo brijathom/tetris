@@ -12,11 +12,18 @@
         <title>Tetris</title>
     </head>
     <body>
-        <canvas id="tetris" width="200" height="400"></canvas>
+        <canvas id="field" width="200" height="400"></canvas>
     </body>
 
     <div>
         Score :
         <div id="score">0</div>
+    </div>
+    <div>
+        <button onclick="buttons('left')">&#8592</button>
+        <button onclick="buttons('right')">&#8594</button>
+        <button onclick="buttons('rotate')">&#8635</button>
+        <button onclick="buttons('down')">&#8595</button>
+        
     </div>
 </html>
