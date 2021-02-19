@@ -11,8 +11,7 @@ const LINE = new Audio();
 LINE.src = "/sounds/line.mp3";
 const ROTATE = new Audio();
 ROTATE.src = "/sounds/rotate.mp3";
-
-ROTATE.play();
+var modal = document.getElementById("myModal");
 
 // Squares on the grid are filled in as required
 function drawSquare(x, y, color) {
@@ -155,7 +154,9 @@ Piece.prototype.lock = function () {
             }
             if (this.y + r < 0) {
                 GAME_OVER.play();
-                alert("Game Over");
+                // alert("Game Over");
+                modal.style.display = "block";
+
                 gameOver = true;
                 break;
             }
