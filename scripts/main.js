@@ -3,7 +3,7 @@ const CONTEXT = CANVAS.getContext("2d");
 const SCORE_ELEMENT = document.getElementById("score");
 const ROW = 20;
 const COL = (COLUMN = 10);
-const SQ = (SQUARE_SIZE = 25);
+const SQ = (SQUARE_SIZE = 20);
 const EMPTY = "#fafaff";
 const STROKE_STYLE = "#211f1f";
 const GAME_OVER = new Audio();
