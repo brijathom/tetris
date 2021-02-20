@@ -236,7 +236,7 @@ function keypad(event) {
         p.moveLeft();
     } else if (event.keyCode == 38 && gameOver != true) {
         p.rotate();
-        ROTATE.currentTime = 0;
+        ROTATE.src = "/sounds/rotate.mp3";
         ROTATE.play();
     } else if (event.keyCode == 39 && gameOver != true) {
         p.moveRight();
