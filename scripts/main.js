@@ -6,7 +6,6 @@ const COL = (COLUMN = 10);
 const SQ = (SQUARE_SIZE = 20);
 const EMPTY = "#fafaff";
 const STROKE_STYLE = "#211f1f";
-
 const ROTATE = new Audio();
 ROTATE.src = "/sounds/rotate.mp3";
 const LINE = new Audio();
