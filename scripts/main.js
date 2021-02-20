@@ -249,7 +249,7 @@ function buttons(button) {
         p.moveLeft();
     } else if (button == "rotate" && gameOver != true) {
         p.rotate();
-        ROTATE.play();
+        // ROTATE.play();
     } else if (button == "right" && gameOver != true) {
         p.moveRight();
     } else if (button == "down" && gameOver != true) {
