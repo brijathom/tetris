@@ -12,7 +12,8 @@ const LINE = new Audio();
 LINE.src = "/sounds/line.mp3";
 const ROTATE = new Audio();
 ROTATE.src = "/sounds/rotate.mp3";
-var modal = document.getElementById("myModal");
+const BUTTON_GROUP = document.getElementById("button-group");
+const PLAY_AGAIN = document.getElementById("play-again");
 
 // The contents of the game grid are stored in an array of arrays.
 // The colors of the squares in each respective row are contained
@@ -197,7 +198,8 @@ Piece.prototype.lock = function () {
             if (this.y + r < 0) {
                 GAME_OVER.play();
                 gameOver = true;
-                modal.style.display = "block";
+                BUTTON_GROUP.style.display = "none";
+                PLAY_AGAIN.style.display = "block";
                 break;
             }
             grid[this.y + r][this.x + c] = this.color;
