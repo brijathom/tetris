@@ -1,4 +1,4 @@
-// The blueprints for each tetromino in all possible orientations
+// The blueprints for each tetromino in all possible orientations.
 
 const O = [
     [

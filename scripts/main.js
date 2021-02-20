@@ -5,6 +5,7 @@ const ROW = 20;
 const COL = (COLUMN = 10);
 const SQ = (squareSize = 25);
 const VACANT = "#fafaff";
+const STROKE_STYLE = "#211f1f";
 const GAME_OVER = new Audio();
 GAME_OVER.src = "/sounds/game_over.mp3";
 const LINE = new Audio();
@@ -13,15 +14,10 @@ const ROTATE = new Audio();
 ROTATE.src = "/sounds/rotate.mp3";
 var modal = document.getElementById("myModal");
 
-// Squares on the grid are filled in as required
-function drawSquare(x, y, color) {
-    ctx.fillStyle = color;
-    ctx.fillRect(x * SQ, y * SQ, SQ, SQ);
-    ctx.strokeStyle = "#000000";
-    ctx.strokeRect(x * SQ, y * SQ, SQ, SQ);
-}
-
-// The grid is created
+// The contents of the game grid are stored in an array of arrays.
+// The colors of the squares in each respective row are contained
+// in their own array.
+// Initially all of the squares are set to the color assigned to the VACANT constant.
 let grid = [];
 for (r = 0; r < ROW; r++) {
     grid[r] = [];
@@ -30,7 +26,17 @@ for (r = 0; r < ROW; r++) {
     }
 }
 
-// The grid is updated as required
+// This drawSquare function draws the squares that make up the grid.
+// The fill style of the square is set to the designated color of the piece.
+// The stroke style of each square is set to the color assigned to the STROKE_STYLE constant.
+function drawSquare(x, y, color) {
+    ctx.fillStyle = color;
+    ctx.fillRect(x * SQ, y * SQ, SQ, SQ);
+    ctx.strokeStyle = STROKE_STYLE;
+    ctx.strokeRect(x * SQ, y * SQ, SQ, SQ);
+}
+
+// The drawGrid function draws the grid on the page by drawing each square based on the colors stored stored in the grid array.
 function drawGrid() {
     for (r = 0; r < ROW; r++) {
         for (c = 0; c < COL; c++) {
@@ -39,9 +45,10 @@ function drawGrid() {
     }
 }
 
+// The drawGrid function is called here in order to draw the blank grid at the start of the game.
 drawGrid();
 
-// The pieces and their associated colors
+// The shapes (as set in the tetrominos.js file) and colours of the respective pieces are stored in the PIECES array.
 const PIECES = [
     [I, "#ff694f"],
     [O, "#ffe54f"],
@@ -52,25 +59,24 @@ const PIECES = [
     [Z, "#ff4fd9"],
 ];
 
-// A random piece is selected
-function randomPiece() {
-    let r = (randomN = Math.floor(Math.random() * PIECES.length));
-    return new Piece(PIECES[r][0], PIECES[r][1]);
+// The Piece class is definied here.
+// The tetrominoN attribute refers to the orientation of the piece.
+// tetrominoN numbers 0-3 refer to the 4 orientations that each tetromino shape can take respectively.
+// The activeTetromino attribute refers to the current orientation that is displayed on the grid.
+// The initial coordinates of the top right corner of the Pieces are set so that they are off of the canvas.
+// This allows them to appear at the top of the grid as they start their descent down the grid.
+class Piece {
+    constructor(tetromino, color) {
+        this.tetromino = tetromino;
+        this.color = color;
+        this.tetrominoN = 0;
+        this.activeTetromino = this.tetromino[this.tetrominoN];
+        this.x = 3;
+        this.y = -2;
+    }
 }
 
-let p = randomPiece();
-
-// The piece object
-function Piece(tetromino, color) {
-    this.tetromino = tetromino;
-    this.color = color;
-    this.tetrominoN = 0;
-    this.activeTetromino = this.tetromino[this.tetrominoN];
-    this.x = 3;
-    this.y = -2;
-}
-
-// The piece is filled in
+// The fill method fills the squares appropriately on the grid.
 Piece.prototype.fill = function (color) {
     for (r = 0; r < this.activeTetromino.length; r++) {
         for (c = 0; c < this.activeTetromino.length; c++) {
@@ -81,17 +87,42 @@ Piece.prototype.fill = function (color) {
     }
 };
 
-// The piece is drawn on the grid
+// The draw method passes the color of tetrominos to the fill function.
 Piece.prototype.draw = function () {
     this.fill(this.color);
 };
 
-// The piece is removed from the grid
+// The unDraw method passes the VACANT color to the fill function.
 Piece.prototype.unDraw = function () {
     this.fill(VACANT);
 };
 
-// The piece is moved down
+// The collision method checks that a movement performed on a piece will cause it to collide with any of the walls of the grid or any other pieces already in place on the board.
+Piece.prototype.collision = function (x, y, piece) {
+    for (r = 0; r < piece.length; r++) {
+        for (c = 0; c < piece.length; c++) {
+            if (!piece[r][c]) {
+                continue;
+            }
+            let newX = this.x + c + x;
+            let newY = this.y + r + y;
+            if (newX < 0 || newX >= COL || newY >= ROW) {
+                return true;
+            }
+            if (newY < 0) {
+                continue;
+            }
+            if (grid[newY][newX] != VACANT) {
+                return true;
+            }
+        }
+    }
+    return false;
+};
+
+// The moveDown method moves a piece down by incrementing the y coordinate by 1 if there is no collision.
+// If the piece collides with other pieces and locks in place then a new random piece is generated.
+// If the game is over a new random pieces is not generated.
 Piece.prototype.moveDown = function () {
     if (!this.collision(0, 1, this.activeTetromino)) {
         this.unDraw();
@@ -99,11 +130,15 @@ Piece.prototype.moveDown = function () {
         this.draw();
     } else {
         this.lock();
-        p = randomPiece();
+        if (gameOver != true) {
+            p = randomPiece();
+        } else {
+            return;
+        }
     }
 };
 
-// The piece is moved to the right
+// The moveRight method moves a piece to the right by incrementing the x coordinate by 1.
 Piece.prototype.moveRight = function () {
     if (!this.collision(1, 0, this.activeTetromino)) {
         this.unDraw();
@@ -112,7 +147,7 @@ Piece.prototype.moveRight = function () {
     }
 };
 
-// The piece is moved to the left
+// The moveLeft method moves a piece to the left by decrementing the x coordinate by 1.
 Piece.prototype.moveLeft = function () {
     if (!this.collision(-1, 0, this.activeTetromino)) {
         this.unDraw();
@@ -121,7 +156,9 @@ Piece.prototype.moveLeft = function () {
     }
 };
 
-// The piece is rotated
+// The rotate method rotates the piece by selecting the next pattern of the piece.
+// If the rotation will cause a collision with the right wall the piece is kicked to the left.
+// If the rotation will cause a collision with the left wall the piece will be kicked to the right.
 Piece.prototype.rotate = function () {
     let nextPattern = this.tetromino[(this.tetrominoN + 1) % this.tetromino.length];
     let kick = 0;
@@ -143,9 +180,14 @@ Piece.prototype.rotate = function () {
     }
 };
 
+// The initial score for the game is set to 0.
 let score = 0;
 
-// The piece is locked in place
+// The lock method locks a piece in place.
+// This is performed by adding adding the piece in its current postion to the grid array.
+// This method also checks if there is a full row.
+// This is done by checking if there are any rows with no vacant squares.
+// If there are full rows they are removed from the grid and the points total is increase by 10.
 Piece.prototype.lock = function () {
     for (r = 0; r < this.activeTetromino.length; r++) {
         for (c = 0; c < this.activeTetromino.length; c++) {
@@ -154,10 +196,8 @@ Piece.prototype.lock = function () {
             }
             if (this.y + r < 0) {
                 GAME_OVER.play();
-                // alert("Game Over");
-                modal.style.display = "block";
-
                 gameOver = true;
+                modal.style.display = "block";
                 break;
             }
             grid[this.y + r][this.x + c] = this.color;
@@ -185,70 +225,47 @@ Piece.prototype.lock = function () {
     scoreElement.innerHTML = score;
 };
 
-// The collision function
-Piece.prototype.collision = function (x, y, piece) {
-    for (r = 0; r < piece.length; r++) {
-        for (c = 0; c < piece.length; c++) {
-            if (!piece[r][c]) {
-                continue;
-            }
+document.addEventListener("keydown", keypad);
 
-            let newX = this.x + c + x;
-            let newY = this.y + r + y;
-
-            if (newX < 0 || newX >= COL || newY >= ROW) {
-                return true;
-            }
-
-            if (newY < 0) {
-                continue;
-            }
-
-            if (grid[newY][newX] != VACANT) {
-                return true;
-            }
-        }
-    }
-    return false;
-};
-
-document.addEventListener("keydown", control);
-
-// Keypad controls
-function control(event) {
-    if (event.keyCode == 37) {
+// The keypad function enables control of pieces using the keypad.
+function keypad(event) {
+    if (event.keyCode == 37 && gameOver != true) {
         p.moveLeft();
-        dropStart = Date.now();
-    } else if (event.keyCode == 38) {
+    } else if (event.keyCode == 38 && gameOver != true) {
         p.rotate();
         ROTATE.play();
-        dropStart = Date.now();
-    } else if (event.keyCode == 39) {
+    } else if (event.keyCode == 39 && gameOver != true) {
         p.moveRight();
-        dropStart = Date.now();
-    } else if (event.keyCode == 40) {
+    } else if (event.keyCode == 40 && gameOver != true) {
         p.moveDown();
     }
 }
 
-// Button controls
+// The buttons function enables control of pieces using the onscreen buttons.
 function buttons(button) {
-    if (button == "left") {
+    if (button == "left" && gameOver != true) {
         p.moveLeft();
-        dropStart = Date.now();
-    } else if (button == "rotate") {
+    } else if (button == "rotate" && gameOver != true) {
         p.rotate();
         ROTATE.play();
-        dropStart = Date.now();
-    } else if (button == "right") {
+    } else if (button == "right" && gameOver != true) {
         p.moveRight();
-        dropStart = Date.now();
-    } else if (button == "down") {
+    } else if (button == "down" && gameOver != true) {
         p.moveDown();
     }
 }
 
-// The rate at which pieces drop
+// The randomPiece function selects a random piece from the PIECES array.
+function randomPiece() {
+    let r = (randomN = Math.floor(Math.random() * PIECES.length));
+    return new Piece(PIECES[r][0], PIECES[r][1]);
+}
+
+// The randomPiece() function is called here in order to generate the first piece at the start of the game.
+let p = randomPiece();
+
+// The drop function controls the rate at which pieces drop down the grid.
+// The requestAnimationFrame method will keep calling the drop function until the game is over.
 let dropStart = Date.now();
 let gameOver = false;
 function drop() {
@@ -263,4 +280,5 @@ function drop() {
     }
 }
 
+// // The drop function is called here in order to start the game.
 drop();
