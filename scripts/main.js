@@ -1,10 +1,10 @@
-const cvs = document.getElementById("grid");
-const ctx = cvs.getContext("2d");
-const scoreElement = document.getElementById("score");
+const CANVAS = document.getElementById("canvas");
+const CONTEXT = CANVAS.getContext("2d");
+const SCORE_ELEMENT = document.getElementById("score");
 const ROW = 20;
 const COL = (COLUMN = 10);
-const SQ = (squareSize = 25);
-const VACANT = "#fafaff";
+const SQ = (SQUARE_SIZE = 25);
+const EMPTY = "#fafaff";
 const STROKE_STYLE = "#211f1f";
 const GAME_OVER = new Audio();
 GAME_OVER.src = "/sounds/game_over.mp3";
@@ -18,12 +18,12 @@ const PLAY_AGAIN = document.getElementById("play-again");
 // The contents of the game grid are stored in an array of arrays.
 // The colors of the squares in each respective row are contained
 // in their own array.
-// Initially all of the squares are set to the color assigned to the VACANT constant.
+// Initially all of the squares are set to the color assigned to the EMPTY constant.
 let grid = [];
 for (r = 0; r < ROW; r++) {
     grid[r] = [];
     for (c = 0; c < COL; c++) {
-        grid[r][c] = VACANT;
+        grid[r][c] = EMPTY;
     }
 }
 
@@ -31,10 +31,10 @@ for (r = 0; r < ROW; r++) {
 // The fill style of the square is set to the designated color of the piece.
 // The stroke style of each square is set to the color assigned to the STROKE_STYLE constant.
 function drawSquare(x, y, color) {
-    ctx.fillStyle = color;
-    ctx.fillRect(x * SQ, y * SQ, SQ, SQ);
-    ctx.strokeStyle = STROKE_STYLE;
-    ctx.strokeRect(x * SQ, y * SQ, SQ, SQ);
+    CONTEXT.fillStyle = color;
+    CONTEXT.fillRect(x * SQ, y * SQ, SQ, SQ);
+    CONTEXT.strokeStyle = STROKE_STYLE;
+    CONTEXT.strokeRect(x * SQ, y * SQ, SQ, SQ);
 }
 
 // The drawGrid function draws the grid on the page by drawing each square based on the colors stored stored in the grid array.
@@ -61,8 +61,8 @@ const PIECES = [
 ];
 
 // The Piece class is definied here.
-// The tetrominoN attribute refers to the orientation of the piece.
-// tetrominoN numbers 0-3 refer to the 4 orientations that each tetromino shape can take respectively.
+// The tetrominoNumber attribute refers to the orientation of the piece.
+// The numbers 0-3 refer to the 4 orientations that each tetromino shape can take respectively.
 // The activeTetromino attribute refers to the current orientation that is displayed on the grid.
 // The initial coordinates of the top right corner of the Pieces are set so that they are off of the canvas.
 // This allows them to appear at the top of the grid as they start their descent down the grid.
@@ -70,8 +70,8 @@ class Piece {
     constructor(tetromino, color) {
         this.tetromino = tetromino;
         this.color = color;
-        this.tetrominoN = 0;
-        this.activeTetromino = this.tetromino[this.tetrominoN];
+        this.tetrominoNumber = 0;
+        this.activeTetromino = this.tetromino[this.tetrominoNumber];
         this.x = 3;
         this.y = -2;
     }
@@ -93,9 +93,9 @@ Piece.prototype.draw = function () {
     this.fill(this.color);
 };
 
-// The unDraw method passes the VACANT color to the fill function.
+// The unDraw method passes the EMPTY color to the fill function.
 Piece.prototype.unDraw = function () {
-    this.fill(VACANT);
+    this.fill(EMPTY);
 };
 
 // The collision method checks that a movement performed on a piece will cause it to collide with any of the walls of the grid or any other pieces already in place on the board.
@@ -113,7 +113,7 @@ Piece.prototype.collision = function (x, y, piece) {
             if (newY < 0) {
                 continue;
             }
-            if (grid[newY][newX] != VACANT) {
+            if (grid[newY][newX] != EMPTY) {
                 return true;
             }
         }
@@ -161,7 +161,7 @@ Piece.prototype.moveLeft = function () {
 // If the rotation will cause a collision with the right wall the piece is kicked to the left.
 // If the rotation will cause a collision with the left wall the piece will be kicked to the right.
 Piece.prototype.rotate = function () {
-    let nextPattern = this.tetromino[(this.tetrominoN + 1) % this.tetromino.length];
+    let nextPattern = this.tetromino[(this.tetrominoNumber + 1) % this.tetromino.length];
     let kick = 0;
 
     if (this.collision(0, 0, nextPattern)) {
@@ -175,8 +175,8 @@ Piece.prototype.rotate = function () {
     if (!this.collision(kick, 0, nextPattern)) {
         this.unDraw();
         this.x += kick;
-        this.tetrominoN = (this.tetrominoN + 1) % this.tetromino.length;
-        this.activeTetromino = this.tetromino[this.tetrominoN];
+        this.tetrominoNumber = (this.tetrominoNumber + 1) % this.tetromino.length;
+        this.activeTetromino = this.tetromino[this.tetrominoNumber];
         this.draw();
     }
 };
@@ -208,7 +208,7 @@ Piece.prototype.lock = function () {
     for (r = 0; r < ROW; r++) {
         let isRowFull = true;
         for (c = 0; c < COL; c++) {
-            isRowFull = isRowFull && grid[r][c] != VACANT;
+            isRowFull = isRowFull && grid[r][c] != EMPTY;
         }
         if (isRowFull) {
             for (y = r; y > 1; y--) {
@@ -217,14 +217,14 @@ Piece.prototype.lock = function () {
                 }
             }
             for (c = 0; c < COL; c++) {
-                grid[0][c] = VACANT;
+                grid[0][c] = EMPTY;
             }
             score += 10;
             LINE.play();
         }
     }
     drawGrid();
-    scoreElement.innerHTML = score;
+    SCORE_ELEMENT.innerHTML = score;
 };
 
 document.addEventListener("keydown", keypad);
