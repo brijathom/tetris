@@ -16,19 +16,6 @@ GAME_OVER.src = "/sounds/game_over.mp3";
 const BUTTON_GROUP = document.getElementById("button-group");
 const PLAY_AGAIN = document.getElementById("play-again");
 
-ROTATE.volume = 0;
-LINE.volume = 0;
-GAME_OVER.volume = 0;
-ROTATE.play();
-ROTATE.pause();
-LINE.play();
-LINE.pause();
-GAME_OVER.play();
-GAME_OVER.pause();
-ROTATE.volume = 1;
-LINE.volume = 1;
-GAME_OVER.volume = 1;
-
 // The contents of the game grid are stored in an array of arrays.
 // The colors of the squares in each respective row are contained
 // in their own array.
