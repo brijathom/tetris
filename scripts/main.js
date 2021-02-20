@@ -8,6 +8,7 @@ const EMPTY = "#fafaff";
 const STROKE_STYLE = "#211f1f";
 const ROTATE = new Audio();
 ROTATE.src = "/sounds/rotate.mp3";
+ROTATE.currentTime = 0;
 const LINE = new Audio();
 LINE.src = "/sounds/line.mp3";
 const GAME_OVER = new Audio();
@@ -235,6 +236,7 @@ function keypad(event) {
         p.moveLeft();
     } else if (event.keyCode == 38 && gameOver != true) {
         p.rotate();
+        ROTATE.currentTime = 0;
         ROTATE.play();
     } else if (event.keyCode == 39 && gameOver != true) {
         p.moveRight();
@@ -249,7 +251,7 @@ function buttons(button) {
         p.moveLeft();
     } else if (button == "rotate" && gameOver != true) {
         p.rotate();
-        // ROTATE.play();
+        ROTATE.play();
     } else if (button == "right" && gameOver != true) {
         p.moveRight();
     } else if (button == "down" && gameOver != true) {
