@@ -1,21 +1,3 @@
-const CANVAS = document.getElementById("canvas");
-const CONTEXT = CANVAS.getContext("2d");
-const SCORE_ELEMENT = document.getElementById("score");
-const ROW = 20;
-const COL = (COLUMN = 10);
-const SQ = (SQUARE_SIZE = 20);
-const EMPTY = "#fafaff";
-const STROKE_STYLE = "#211f1f";
-const ROTATE = new Audio();
-ROTATE.src = "/sounds/rotate.mp3";
-ROTATE.currentTime = 0;
-const LINE = new Audio();
-LINE.src = "/sounds/line.mp3";
-const GAME_OVER = new Audio();
-GAME_OVER.src = "/sounds/game_over.mp3";
-const BUTTON_GROUP = document.getElementById("button-group");
-const PLAY_AGAIN = document.getElementById("play-again");
-
 // The contents of the game grid are stored in an array of arrays.
 // The colors of the squares in each respective row are contained
 // in their own array.
@@ -197,10 +179,10 @@ Piece.prototype.lock = function () {
                 continue;
             }
             if (this.y + r < 0) {
-                GAME_OVER.play();
                 gameOver = true;
                 BUTTON_GROUP.style.display = "none";
                 PLAY_AGAIN.style.display = "block";
+                GAME_OVER.play();
                 break;
             }
             grid[this.y + r][this.x + c] = this.color;
@@ -283,5 +265,5 @@ function drop() {
     }
 }
 
-// // The drop function is called here in order to start the game.
+// The drop function is called here in order to start the game.
 drop();

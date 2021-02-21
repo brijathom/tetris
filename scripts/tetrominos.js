@@ -1,5 +1,4 @@
-// The blueprints for each tetromino in all possible orientations.
-
+// The blueprints for each tetromino in all possible orientations are set.
 const O = [
     [
         [0, 0, 0, 0],
