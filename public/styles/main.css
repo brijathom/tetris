@@ -14,6 +14,7 @@ body {
     -webkit-user-select: none;
     -webkit-touch-callout: none;
     height: 95vh;
+    min-width: 250px;
     font-size: 25px;
     margin-top: 3vh;
 }
@@ -29,7 +30,6 @@ button {
     text-align: center;
     vertical-align: middle;
     cursor: pointer;
-    background-image: none;
     background-color: #e9e8e8;
     outline-style: none;
     touch-action: none;
@@ -42,6 +42,12 @@ button {
     border-radius: 6px;
 }
 
+@media (hover: hover) and (pointer: fine) {
+    button:hover {
+        background-color: #f3f0f0;
+    }
+}
+
 #score-wrapper {
     margin: 0px 0px 5px 0px;
 }
@@ -50,8 +56,9 @@ button {
     display: inline-block;
 }
 
-#play-again button {
+#play button {
     font-weight: bold;
     font-family: Arial, Helvetica, sans-serif;
+    padding: 6px 15px;
     font-size: 25px;
 }

@@ -8,14 +8,18 @@ const SQ = (SQUARE_SIZE = 20);
 const EMPTY = "#fafaff";
 const STROKE_STYLE = "#211f1f";
 const BUTTON_GROUP = document.getElementById("button-group");
-const PLAY_AGAIN = document.getElementById("play-again");
+const PLAY = document.getElementById("play");
 
-const ROTATE = new Howl({
-    src: ["./sounds/rotate.mp3"],
-});
-const LINE = new Howl({
-    src: ["./sounds/line.mp3"],
-});
-const GAME_OVER = new Howl({
-    src: ["./sounds/game_over.mp3"],
-});
+let audioContext;
+let ROTATE;
+let LINE;
+let GAME_OVER;
+
+function loadSounds() {
+    if (!audioContext) {
+        audioContext = new AudioContext();
+        ROTATE = new Audio("/sounds/rotate.mp3");
+        LINE = new Audio("/sounds/line.mp3");
+        GAME_OVER = new Audio("/sounds/game_over.mp3");
+    }
+}
