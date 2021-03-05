@@ -17,9 +17,14 @@ let GAME_OVER;
 
 function loadSounds() {
     if (!audioContext) {
-        audioContext = new AudioContext();
-        ROTATE = new Audio("/sounds/rotate.mp3");
-        LINE = new Audio("/sounds/line.mp3");
-        GAME_OVER = new Audio("/sounds/game_over.mp3");
+        ROTATE = new Howl({
+            src: ["/sounds/rotate.mp3"],
+        });
+        LINE = new Howl({
+            src: ["/sounds/line.mp3"],
+        });
+        GAME_OVER = new Howl({
+            src: ["/sounds/game_over.mp3"],
+        });
     }
 }
