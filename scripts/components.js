@@ -11,11 +11,11 @@ const BUTTON_GROUP = document.getElementById("button-group");
 const PLAY_AGAIN = document.getElementById("play-again");
 
 const ROTATE = new Howl({
-    src: ["/sounds/rotate.mp3"],
+    src: ["./sounds/rotate.mp3"],
 });
 const LINE = new Howl({
-    src: ["/sounds/line.mp3"],
+    src: ["./sounds/line.mp3"],
 });
 const GAME_OVER = new Howl({
-    src: ["/sounds/game_over.mp3"],
+    src: ["./sounds/game_over.mp3"],
 });
