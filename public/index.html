@@ -20,26 +20,20 @@
         <script src="scripts/components.js" defer></script>
         <script src="scripts/tetrominos.js" defer></script>
         <script src="scripts/main.js" defer></script>
-        <script src="scripts/listener.js" defer></script>
         <title>Tetris</title>
     </head>
-
     <body>
         <canvas id="canvas" width="200" height="400"></canvas>
         <div id="score-wrapper">
             Score :
             <div id="score">0</div>
         </div>
-
+        <button id="play-button">Play?</button>
         <div id="button-group" style="display: none">
             <button id="left"><i class="fas fa-arrow-left fa-2x"></i></button>
             <button id="right"><i class="fas fa-arrow-right fa-2x"></i></button>
             <button id="rotate"><i class="fas fa-sync fa-2x"></i></button>
             <button id="down"><i class="fas fa-arrow-down fa-2x"></i></button>
-        </div>
-
-        <div id="play">
-            <button id="play-button">Play?</button>
         </div>
     </body>
 </html>
