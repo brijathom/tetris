@@ -388,6 +388,66 @@ function play() {
         clearTimeout(timeout);
     });
 
+    left.addEventListener("touchstart", function (event) {
+        buttons("left");
+        event.preventDefault();
+        timeout = setTimeout(function () {
+            interval = setInterval(function () {
+                buttons("left");
+            }, 35);
+        }, 400);
+    });
+
+    left.addEventListener("touchend", function () {
+        clearInterval(interval);
+        clearTimeout(timeout);
+    });
+
+    right.addEventListener("touchstart", function (event) {
+        buttons("right");
+        event.preventDefault();
+        timeout = setTimeout(function () {
+            interval = setInterval(function () {
+                buttons("right");
+            }, 35);
+        }, 400);
+    });
+
+    right.addEventListener("touchend", function () {
+        clearInterval(interval);
+        clearTimeout(timeout);
+    });
+
+    rotate.addEventListener("touchstart", function (event) {
+        buttons("rotate");
+        event.preventDefault();
+        timeout = setTimeout(function () {
+            interval = setInterval(function () {
+                buttons("rotate");
+            }, 35);
+        }, 400);
+    });
+
+    rotate.addEventListener("touchend", function () {
+        clearInterval(interval);
+        clearTimeout(timeout);
+    });
+
+    down.addEventListener("touchstart", function (event) {
+        buttons("down");
+        event.preventDefault();
+        timeout = setTimeout(function () {
+            interval = setInterval(function () {
+                buttons("down");
+            }, 35);
+        }, 400);
+    });
+
+    down.addEventListener("touchend", function () {
+        clearInterval(interval);
+        clearTimeout(timeout);
+    });
+
     // The drop function is called here in order to start the game.
     drop();
 
