@@ -23,7 +23,7 @@ body {
 #canvas {
     pointer-events: none;
     display: block;
-    margin: 20px auto 5px auto;
+    margin: 20px auto 7px auto;
 }
 
 button {
@@ -50,7 +50,7 @@ button {
 }
 
 #score-wrapper {
-    margin: 0px 0px 5px 0px;
+    margin: 0px 0px 7px 0px;
 }
 
 #score {
