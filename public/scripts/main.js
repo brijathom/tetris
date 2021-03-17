@@ -456,8 +456,14 @@ function play() {
     BUTTON_GROUP.style.display = "block";
 }
 
-// When the play button is clicked the sound files are loaded and the play function is called.
-document.getElementById("play-button").addEventListener("click", function () {
+// When the play button is pressed the sound files are loaded and the play function is called.
+document.getElementById("play-button").addEventListener("mousedown", function () {
+    loadSounds();
+    play();
+});
+
+document.getElementById("play-button").addEventListener("touchstart", function (event) {
+    event.preventDefault();
     loadSounds();
     play();
 });
