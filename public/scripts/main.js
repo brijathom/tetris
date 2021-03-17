@@ -34,6 +34,10 @@ initialDrawGrid();
 
 // This function controls the game.
 function play() {
+    // The initial score for the game is set to 0.
+    let score = 0;
+    SCORE_ELEMENT.innerHTML = score;
+
     // The contents of the game grid are stored in an array of arrays.
     // The colors of the squares in each respective row are contained
     // in their own array.
@@ -199,9 +203,6 @@ function play() {
             this.draw();
         }
     };
-
-    // The initial score for the game is set to 0.
-    let score = 0;
 
     // The lock method locks a piece in place.
     // This is performed by adding adding the piece in its current postion to the grid array.
