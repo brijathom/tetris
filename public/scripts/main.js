@@ -303,21 +303,89 @@ function play() {
         }
     }
 
+    // Functionality is added to the game buttons.
     const left = document.getElementById("left");
     const right = document.getElementById("right");
     const rotate = document.getElementById("rotate");
     const down = document.getElementById("down");
-    left.addEventListener("click", function () {
+
+    var interval = null;
+    var timeout = null;
+
+    left.addEventListener("mousedown", function () {
         buttons("left");
+        timeout = setTimeout(function () {
+            interval = setInterval(function () {
+                buttons("left");
+            }, 35);
+        }, 400);
     });
-    right.addEventListener("click", function () {
+
+    left.addEventListener("mouseup", function () {
+        clearInterval(interval);
+        clearTimeout(timeout);
+    });
+
+    left.addEventListener("mouseout", function () {
+        clearInterval(interval);
+        clearTimeout(timeout);
+    });
+
+    right.addEventListener("mousedown", function () {
         buttons("right");
+        timeout = setTimeout(function () {
+            interval = setInterval(function () {
+                buttons("right");
+            }, 35);
+        }, 400);
     });
-    rotate.addEventListener("click", function () {
+
+    right.addEventListener("mouseup", function () {
+        clearInterval(interval);
+        clearTimeout(timeout);
+    });
+
+    right.addEventListener("mouseout", function () {
+        clearInterval(interval);
+        clearTimeout(timeout);
+    });
+
+    rotate.addEventListener("mousedown", function () {
         buttons("rotate");
+        timeout = setTimeout(function () {
+            interval = setInterval(function () {
+                buttons("rotate");
+            }, 35);
+        }, 400);
     });
-    down.addEventListener("click", function () {
+
+    rotate.addEventListener("mouseup", function () {
+        clearInterval(interval);
+        clearTimeout(timeout);
+    });
+
+    rotate.addEventListener("mouseout", function () {
+        clearInterval(interval);
+        clearTimeout(timeout);
+    });
+
+    down.addEventListener("mousedown", function () {
         buttons("down");
+        timeout = setTimeout(function () {
+            interval = setInterval(function () {
+                buttons("down");
+            }, 35);
+        }, 400);
+    });
+
+    down.addEventListener("mouseup", function () {
+        clearInterval(interval);
+        clearTimeout(timeout);
+    });
+
+    down.addEventListener("mouseout", function () {
+        clearInterval(interval);
+        clearTimeout(timeout);
     });
 
     // The drop function is called here in order to start the game.
