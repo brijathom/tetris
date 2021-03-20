@@ -5,7 +5,7 @@
 let grid = [];
 for (r = 0; r < ROW; r++) {
     grid[r] = [];
-    for (c = 0; c < COL; c++) {
+    for (c = 0; c < COLUMN; c++) {
         grid[r][c] = EMPTY;
     }
 }
@@ -15,15 +15,15 @@ for (r = 0; r < ROW; r++) {
 // The stroke style of each square is set to the color assigned to the STROKE_STYLE constant.
 function initialDrawSquare(x, y, color) {
     CONTEXT.fillStyle = color;
-    CONTEXT.fillRect(x * SQ, y * SQ, SQ, SQ);
+    CONTEXT.fillRect(x * SQUARE_SIZE, y * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
     CONTEXT.strokeStyle = STROKE_STYLE;
-    CONTEXT.strokeRect(x * SQ, y * SQ, SQ, SQ);
+    CONTEXT.strokeRect(x * SQUARE_SIZE, y * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
 }
 
 // The grid is displayed on the page by drawing each square based on the colors stored stored in the grid array.
 function initialDrawGrid() {
     for (r = 0; r < ROW; r++) {
-        for (c = 0; c < COL; c++) {
+        for (c = 0; c < COLUMN; c++) {
             initialDrawSquare(c, r, grid[r][c]);
         }
     }
@@ -45,7 +45,7 @@ function play() {
     let grid = [];
     for (r = 0; r < ROW; r++) {
         grid[r] = [];
-        for (c = 0; c < COL; c++) {
+        for (c = 0; c < COLUMN; c++) {
             grid[r][c] = EMPTY;
         }
     }
@@ -55,15 +55,15 @@ function play() {
     // The stroke style of each square is set to the color assigned to the STROKE_STYLE constant.
     function drawSquare(x, y, color) {
         CONTEXT.fillStyle = color;
-        CONTEXT.fillRect(x * SQ, y * SQ, SQ, SQ);
+        CONTEXT.fillRect(x * SQUARE_SIZE, y * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
         CONTEXT.strokeStyle = STROKE_STYLE;
-        CONTEXT.strokeRect(x * SQ, y * SQ, SQ, SQ);
+        CONTEXT.strokeRect(x * SQUARE_SIZE, y * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
     }
 
     // The grid is displayed on the page by drawing each square based on the colors stored stored in the grid array.
     function drawGrid() {
         for (r = 0; r < ROW; r++) {
-            for (c = 0; c < COL; c++) {
+            for (c = 0; c < COLUMN; c++) {
                 drawSquare(c, r, grid[r][c]);
             }
         }
@@ -130,7 +130,7 @@ function play() {
                 }
                 let newX = this.x + c + x;
                 let newY = this.y + r + y;
-                if (newX < 0 || newX >= COL || newY >= ROW) {
+                if (newX < 0 || newX >= COLUMN || newY >= ROW) {
                     return true;
                 }
                 if (newY < 0) {
@@ -188,7 +188,7 @@ function play() {
         let kick = 0;
 
         if (this.collision(0, 0, nextPattern)) {
-            if (this.x > COL / 2) {
+            if (this.x > COLUMN / 2) {
                 kick = -1;
             } else {
                 kick = 1;
@@ -227,16 +227,16 @@ function play() {
         }
         for (r = 0; r < ROW; r++) {
             let isRowFull = true;
-            for (c = 0; c < COL; c++) {
+            for (c = 0; c < COLUMN; c++) {
                 isRowFull = isRowFull && grid[r][c] != EMPTY;
             }
             if (isRowFull) {
                 for (y = r; y > 1; y--) {
-                    for (c = 0; c < COL; c++) {
+                    for (c = 0; c < COLUMN; c++) {
                         grid[y][c] = grid[y - 1][c];
                     }
                 }
-                for (c = 0; c < COL; c++) {
+                for (c = 0; c < COLUMN; c++) {
                     grid[0][c] = EMPTY;
                 }
                 score += 10;
@@ -248,32 +248,44 @@ function play() {
     };
 
     // Pieces can be controlled using the arrow keys on the keypad.
-    function keypad(event) {
-        if (event.keyCode == 37 && gameOver != true) {
+    function keyControl(event) {
+        if (event.keyCode == 37 && buttonPressed != true && gameOver != true) {
+            keyPressed = true;
             p.moveLeft();
-        } else if (event.keyCode == 38 && gameOver != true) {
+        } else if (event.keyCode == 38 && buttonPressed != true && gameOver != true) {
+            keyPressed = true;
             p.rotate();
             rotateSound.play();
-        } else if (event.keyCode == 39 && gameOver != true) {
+        } else if (event.keyCode == 39 && buttonPressed != true && gameOver != true) {
+            keyPressed = true;
             p.moveRight();
-        } else if (event.keyCode == 40 && gameOver != true) {
+        } else if (event.keyCode == 40 && buttonPressed != true && gameOver != true) {
+            keyPressed = true;
             p.moveDown();
         }
     }
 
-    // The keypad function will be called when a keydown event is detected.
-    document.addEventListener("keydown", keypad);
+    function keyRelease() {
+        keyPressed = false;
+    }
+
+    // The keyControl function will be called when a keydown event is detected.
+    var keyPressed = false;
+    document.addEventListener("keydown", keyControl);
+
+    //  // The keyRelease function will be called when a keydown event is detected.
+    document.addEventListener("keyup", keyRelease);
 
     // Pieces can be controlled using the onscreen buttons.
     function buttons(button) {
-        if (button == "left" && gameOver != true) {
+        if (button == "left-button" && keyPressed != true && gameOver != true) {
             p.moveLeft();
-        } else if (button == "rotate" && gameOver != true) {
+        } else if (button == "rotate-button" && keyPressed != true && gameOver != true) {
             p.rotate();
             rotateSound.play();
-        } else if (button == "right" && gameOver != true) {
+        } else if (button == "right-button" && keyPressed != true && gameOver != true) {
             p.moveRight();
-        } else if (button == "down" && gameOver != true) {
+        } else if (button == "down-button" && keyPressed != true && gameOver != true) {
             p.moveDown();
         }
     }
@@ -304,146 +316,154 @@ function play() {
     }
 
     // Functionality is added to the game buttons.
-    const left = document.getElementById("left");
-    const right = document.getElementById("right");
-    const rotate = document.getElementById("rotate");
-    const down = document.getElementById("down");
-
     var interval = null;
     var timeout = null;
+    var buttonPressed = false;
 
-    left.addEventListener("mousedown", function () {
-        buttons("left");
+    LEFT_BUTTON.addEventListener("mousedown", function () {
+        buttonPressed = true;
+        buttons("left-button");
         timeout = setTimeout(function () {
             interval = setInterval(function () {
-                buttons("left");
-            }, 35);
+                buttons("left-button");
+            }, 33);
         }, 400);
     });
 
-    left.addEventListener("mouseup", function () {
+    LEFT_BUTTON.addEventListener("mouseup", function () {
+        buttonPressed = false;
         clearInterval(interval);
         clearTimeout(timeout);
     });
 
-    left.addEventListener("mouseout", function () {
+    LEFT_BUTTON.addEventListener("mouseout", function () {
+        buttonPressed = false;
         clearInterval(interval);
         clearTimeout(timeout);
     });
 
-    right.addEventListener("mousedown", function () {
-        buttons("right");
+    RIGHT_BUTTON.addEventListener("mousedown", function () {
+        buttonPressed = true;
+        buttons("right-button");
         timeout = setTimeout(function () {
             interval = setInterval(function () {
-                buttons("right");
-            }, 35);
+                buttons("right-button");
+            }, 33);
         }, 400);
     });
 
-    right.addEventListener("mouseup", function () {
+    RIGHT_BUTTON.addEventListener("mouseup", function () {
+        buttonPressed = false;
         clearInterval(interval);
         clearTimeout(timeout);
     });
 
-    right.addEventListener("mouseout", function () {
+    RIGHT_BUTTON.addEventListener("mouseout", function () {
+        buttonPressed = false;
         clearInterval(interval);
         clearTimeout(timeout);
     });
 
-    rotate.addEventListener("mousedown", function () {
-        buttons("rotate");
+    ROTATE_BUTTON.addEventListener("mousedown", function () {
+        buttonPressed = true;
+        buttons("rotate-button");
         timeout = setTimeout(function () {
             interval = setInterval(function () {
-                buttons("rotate");
-            }, 35);
+                buttons("rotate-button");
+            }, 33);
         }, 400);
     });
 
-    rotate.addEventListener("mouseup", function () {
+    ROTATE_BUTTON.addEventListener("mouseup", function () {
+        buttonPressed = false;
         clearInterval(interval);
         clearTimeout(timeout);
     });
 
-    rotate.addEventListener("mouseout", function () {
+    ROTATE_BUTTON.addEventListener("mouseout", function () {
+        buttonPressed = false;
         clearInterval(interval);
         clearTimeout(timeout);
     });
 
-    down.addEventListener("mousedown", function () {
-        buttons("down");
+    DOWN_BUTTON.addEventListener("mousedown", function () {
+        buttonPressed = true;
+        buttons("down-button");
         timeout = setTimeout(function () {
             interval = setInterval(function () {
-                buttons("down");
-            }, 35);
+                buttons("down-button");
+            }, 33);
         }, 400);
     });
 
-    down.addEventListener("mouseup", function () {
+    DOWN_BUTTON.addEventListener("mouseup", function () {
+        buttonPressed = false;
         clearInterval(interval);
         clearTimeout(timeout);
     });
 
-    down.addEventListener("mouseout", function () {
+    DOWN_BUTTON.addEventListener("mouseout", function () {
+        buttonPressed = false;
         clearInterval(interval);
         clearTimeout(timeout);
     });
 
-    left.addEventListener("touchstart", function (event) {
-        buttons("left");
+    LEFT_BUTTON.addEventListener("touchstart", function (event) {
+        buttons("left-button");
         event.preventDefault();
         timeout = setTimeout(function () {
             interval = setInterval(function () {
-                buttons("left");
-            }, 35);
+                buttons("left-button");
+            }, 33);
         }, 400);
     });
 
-    left.addEventListener("touchend", function () {
+    LEFT_BUTTON.addEventListener("touchend", function () {
         clearInterval(interval);
         clearTimeout(timeout);
     });
 
-    right.addEventListener("touchstart", function (event) {
-        buttons("right");
+    RIGHT_BUTTON.addEventListener("touchstart", function (event) {
+        buttons("right-button");
         event.preventDefault();
         timeout = setTimeout(function () {
             interval = setInterval(function () {
-                buttons("right");
-            }, 35);
+                buttons("right-button");
+            }, 33);
         }, 400);
     });
 
-    right.addEventListener("touchend", function () {
+    RIGHT_BUTTON.addEventListener("touchend", function () {
         clearInterval(interval);
         clearTimeout(timeout);
     });
 
-    rotate.addEventListener("touchstart", function (event) {
-        buttons("rotate");
+    ROTATE_BUTTON.addEventListener("touchstart", function (event) {
+        buttons("rotate-button");
         event.preventDefault();
         timeout = setTimeout(function () {
             interval = setInterval(function () {
-                buttons("rotate");
-            }, 35);
+                buttons("rotate-button");
+            }, 33);
         }, 400);
     });
 
-    rotate.addEventListener("touchend", function () {
+    ROTATE_BUTTON.addEventListener("touchend", function () {
         clearInterval(interval);
         clearTimeout(timeout);
     });
 
-    down.addEventListener("touchstart", function (event) {
-        buttons("down");
+    DOWN_BUTTON.addEventListener("touchstart", function (event) {
+        buttons("down-button");
         event.preventDefault();
         timeout = setTimeout(function () {
             interval = setInterval(function () {
-                buttons("down");
-            }, 35);
+                buttons("down-button");
+            }, 33);
         }, 400);
     });
 
-    down.addEventListener("touchend", function () {
+    DOWN_BUTTON.addEventListener("touchend", function () {
         clearInterval(interval);
         clearTimeout(timeout);
     });
@@ -457,12 +477,12 @@ function play() {
 }
 
 // When the play button is pressed the sound files are loaded and the play function is called.
-document.getElementById("play-button").addEventListener("mousedown", function () {
+PLAY_BUTTON.addEventListener("mousedown", function () {
     loadSounds();
     play();
 });
 
-document.getElementById("play-button").addEventListener("touchstart", function (event) {
+PLAY_BUTTON.addEventListener("touchstart", function (event) {
     event.preventDefault();
     loadSounds();
     play();
