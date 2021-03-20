@@ -274,18 +274,23 @@ function play() {
     document.addEventListener("keydown", keyControl);
 
     //  // The keyRelease function will be called when a keydown event is detected.
+    buttonPressed = false;
     document.addEventListener("keyup", keyRelease);
 
     // Pieces can be controlled using the onscreen buttons.
     function buttons(button) {
         if (button == "left-button" && keyPressed != true && gameOver != true) {
+            buttonPressed = true;
             p.moveLeft();
         } else if (button == "rotate-button" && keyPressed != true && gameOver != true) {
+            buttonPressed = true;
             p.rotate();
             rotateSound.play();
         } else if (button == "right-button" && keyPressed != true && gameOver != true) {
+            buttonPressed = true;
             p.moveRight();
         } else if (button == "down-button" && keyPressed != true && gameOver != true) {
+            buttonPressed = true;
             p.moveDown();
         }
     }
@@ -321,7 +326,6 @@ function play() {
     var buttonPressed = false;
 
     LEFT_BUTTON.addEventListener("mousedown", function () {
-        buttonPressed = true;
         buttons("left-button");
         timeout = setTimeout(function () {
             interval = setInterval(function () {
@@ -343,7 +347,6 @@ function play() {
     });
 
     RIGHT_BUTTON.addEventListener("mousedown", function () {
-        buttonPressed = true;
         buttons("right-button");
         timeout = setTimeout(function () {
             interval = setInterval(function () {
@@ -365,7 +368,6 @@ function play() {
     });
 
     ROTATE_BUTTON.addEventListener("mousedown", function () {
-        buttonPressed = true;
         buttons("rotate-button");
         timeout = setTimeout(function () {
             interval = setInterval(function () {
@@ -387,7 +389,6 @@ function play() {
     });
 
     DOWN_BUTTON.addEventListener("mousedown", function () {
-        buttonPressed = true;
         buttons("down-button");
         timeout = setTimeout(function () {
             interval = setInterval(function () {
