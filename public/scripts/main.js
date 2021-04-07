@@ -1,6 +1,5 @@
 // The contents of the game grid are stored in an array of arrays.
-// The colors of the squares in each respective row are contained
-// in their own array.
+// The colors of the squares in each respective row are contained in their own array.
 // Initially all of the squares are set to the color assigned to the EMPTY constant.
 let grid = [];
 for (r = 0; r < ROW; r++) {
