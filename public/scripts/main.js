@@ -19,7 +19,7 @@ function initialDrawSquare(x, y, color) {
     CONTEXT.strokeRect(x * SQUARE_SIZE, y * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
 }
 
-// The grid is displayed on the page by drawing each square based on the colors stored stored in the grid array.
+// The grid is displayed on the page by drawing each square based on the colors stored in the grid array.
 function initialDrawGrid() {
     for (r = 0; r < ROW; r++) {
         for (c = 0; c < COLUMN; c++) {
@@ -110,7 +110,7 @@ function play() {
         }
     };
 
-    // The draw method passes the color of tetrominos to the fill function.
+    // The draw method passes the color of the tetrominos to the fill function.
     Piece.prototype.draw = function () {
         this.fill(this.color);
     };
@@ -204,7 +204,7 @@ function play() {
     };
 
     // The lock method locks a piece in place.
-    // This is performed by adding adding the piece in its current postion to the grid array.
+    // This is performed by adding the piece in its current position to the grid array.
     // This method also checks if there is a full row.
     // This is done by checking if there are any rows with no vacant squares.
     // If there are full rows they are removed from the grid and the points total is increased by 10.
