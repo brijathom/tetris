@@ -239,7 +239,9 @@ function play() {
                     grid[0][c] = EMPTY;
                 }
                 score += 10;
-                lineSound.play();
+                if (lineSound.playing() == false) {
+                    lineSound.play();
+                }
             }
         }
         drawGrid();
